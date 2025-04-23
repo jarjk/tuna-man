@@ -187,6 +187,7 @@ impl Duel {
     }
 
     /// play the [`Duel`]: get an outcome with `read_outcome`
+    /// **NOTE**: this moves [`Duel`]'s players
     pub fn play(mut self) -> (Player, Player) {
         loop {
             if let Ok(()) = self.get_outcome() {
@@ -199,8 +200,8 @@ impl Duel {
     ///
     /// - creates [`Duel`] from first two [`Player`]s of `branch`
     /// - plays the [`Duel`]
-    /// - winner get's pushed back to the `branch`
-    /// - loser get's returned
+    /// - winner gets pushed back to the `branch`
+    /// - loser gets returned
     ///
     /// # Warning
     ///

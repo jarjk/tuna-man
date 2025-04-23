@@ -38,19 +38,19 @@ impl Format for SingleElimination {
         while let Some(duel) = branch_d.pop() {
             // duel isn't ready yet to be played, waiting for opponent
             if duel.guest.is_unset() {
-                next_branch.0.push(duel.homie); // should get into the next-round winner branch
+                next_branch.0.push(duel.homie); // should get into the next round
                 continue;
             }
             println!("\nduel: {duel}");
             // play the duel, that leads us to having the result
             let (winner, loser) = duel.play();
-            next_branch.0.push(winner); // winner get's to winner branch
+            next_branch.0.push(winner); // winner gets to next round
             println!("bye-bye {loser}");
-            knocked.0.push(loser); // loser get's to loser branch
+            knocked.0.push(loser); // loser gets knocked out
         }
         println!("\n-----------------------------");
 
-        // handle special cases on winner branch
+        // handle edge cases
         if next_branch.0.len() == 1 {
             self.knocked.0.push(next_branch.0.pop().unwrap());
         } else if next_branch.0.len() == 2 {
@@ -64,10 +64,10 @@ impl Format for SingleElimination {
             // not divisible by 2: we need a special pre-match: duel
             print!("\nspecial duel: ");
             let loser = Duel::handle_special(&mut next_branch);
-            knocked.0.push(loser); // loser get's knocked out
+            knocked.0.push(loser); // loser gets knocked out
         }
 
-        // and we apply the changes by turning new branches into duels
+        // finally we apply the changes
         self.branch = next_branch;
     }
 
