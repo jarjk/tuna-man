@@ -31,9 +31,3 @@ fn main() -> std::io::Result<()> {
     // ratatui::try_restore()?;
     // res
 }
-#[test]
-fn does_it_contain() {
-    let hay = "";
-    let haystack = ["One Two", "Three Four", "Plum Pear"];
-    assert!(haystack.iter().any(|s| s.contains(hay))); // NOTE: wow! it does.
-}
