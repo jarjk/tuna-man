@@ -35,9 +35,9 @@ impl<F: Format> Tournament<F> {
     }
     /// run the whole Tournament
     pub fn run(mut self, args: crate::args::Args) {
-        let no_shuffle = args.shuffle.never() || args.shuffle.initially();
-        if args.shuffle.initially() || args.shuffle.always() {
-            self.format.initial_shuffle();
+        let no_shuffle = args.seed.never() || args.seed.initially();
+        if args.seed.initially() || args.seed.always() {
+            self.format.seed_or_shuffle();
         }
 
         // number of rounds

@@ -38,7 +38,7 @@ pub trait Format {
     fn add_players(&mut self, players: Players);
     /// shuffle players
     /// should be used on initialization
-    fn initial_shuffle(&mut self) {}
+    fn seed_or_shuffle(&mut self) {}
     /// has the tournament reached to an end?
     fn is_end(&self) -> bool;
     /// play the next round duels
