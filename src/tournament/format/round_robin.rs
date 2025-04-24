@@ -75,8 +75,8 @@ impl Format for RoundRobin {
                 continue;
             }
             // execute duel
-            let (winner, _loser) = duel.clone().play();
-            // winner get's a point
+            let (winner, _loser) = duel.play();
+            // winner gets a point
             self.points.entry(winner).and_modify(|p| *p += 1);
         }
         // another round is executed

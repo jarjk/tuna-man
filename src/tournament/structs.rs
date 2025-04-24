@@ -49,11 +49,11 @@ impl std::fmt::Display for Player {
 #[serde(try_from = "&str")]
 #[serde(into = "String")]
 /// a class that a player attends in a school, institution
-/// format: <grade: number, 0-255><id: any character: Unicode scalar value>
+/// format: <grade: number, 0-255><id: any character: Unicode scalar value>, eg: "12Z"
 pub struct Class {
     /// the number of years already spent in the institution, whatever. eg: 10
     pub grade: u8,
-    /// the id of the class, eg: C
+    /// the id of the class, eg: 'C'
     pub id: char,
 }
 impl Class {
@@ -67,7 +67,7 @@ impl TryFrom<&str> for Class {
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         let mut x = value.chars();
         let id = x.next_back().ok_or("invalid class id")?;
-        let numbers = x.filter(char::is_ascii_digit).collect::<String>();
+        let numbers = x.collect::<String>();
         let grade = numbers.parse::<u8>().map_err(|_| "invalid grade number")?;
         Ok(Self { grade, id })
     }
@@ -79,8 +79,7 @@ impl From<Class> for String {
 }
 impl std::fmt::Display for Class {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let s: String = (*self).into();
-        write!(f, "{s}")
+        write!(f, "{}", String::from(*self))
     }
 }
 
@@ -187,6 +186,7 @@ impl Duel {
     }
 
     /// play the [`Duel`]: get an outcome with `read_outcome`
+    /// **NOTE**: this moves [`Duel`]'s players
     pub fn play(mut self) -> (Player, Player) {
         loop {
             if let Ok(()) = self.get_outcome() {
@@ -199,8 +199,8 @@ impl Duel {
     ///
     /// - creates [`Duel`] from first two [`Player`]s of `branch`
     /// - plays the [`Duel`]
-    /// - winner get's pushed back to the `branch`
-    /// - loser get's returned
+    /// - winner gets pushed back to the `branch`
+    /// - loser gets returned
     ///
     /// # Warning
     ///
@@ -222,6 +222,13 @@ mod tests {
     #[test]
     fn class_from() {
         let exp = Class::new(0, 'A');
-        assert_eq!(Ok(exp), "00A".try_into());
+        assert_eq!(Ok(exp), Class::try_from("0A"));
+        assert_eq!(Ok(exp), Class::try_from("0000000000000000000000A"));
+        let exp = Class::new(255, 'Z');
+        assert_eq!(Ok(exp), Class::try_from("255Z"));
+        assert_eq!(Err("invalid grade number"), Class::try_from("2Z55Z"));
+        assert_eq!(Err("invalid class id"), Class::try_from(""));
+        let exp = Class::new(100, '0');
+        assert_eq!(Ok(exp), Class::try_from("1000"));
     }
 }

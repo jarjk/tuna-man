@@ -29,8 +29,8 @@ impl DoubleElimination {
             println!("\nwinner duel: {w_duel}");
             // play the duel, that leads us to having the result
             let (winner, loser) = w_duel.play();
-            next_winner_b.0.push(winner); // winner get's to winner branch
-            next_loser_b.0.push(loser); // loser get's to loser branch
+            next_winner_b.0.push(winner); // winner gets to winner branch
+            next_loser_b.0.push(loser); // loser gets to loser branch
         }
         (next_winner_b, next_loser_b)
     }
@@ -66,9 +66,9 @@ impl DoubleElimination {
                 println!("\nloser duel: {l_duel}");
                 // play the duel, that leads us to having the result
                 let (winner, loser) = l_duel.play();
-                temp_loser_b.0.push(winner); // winner get's to loser branch
+                temp_loser_b.0.push(winner); // winner gets to loser branch
                 println!("bye-bye {loser}");
-                self.knocked.0.push(loser); // loser get's knocked out of the tournament
+                self.knocked.0.push(loser); // loser gets knocked out of the tournament
             }
         }
 
@@ -83,9 +83,9 @@ impl DoubleElimination {
             println!("\nsecond-round loser duel: {l_duel}");
             // play the duel, that leads us to having the result
             let (winner, loser) = l_duel.play();
-            next_loser_b.0.push(winner); // winner get's to loser branch
+            next_loser_b.0.push(winner); // winner gets to loser branch
             println!("bye-bye {loser}");
-            self.knocked.0.push(loser); // loser get's knocked out of the tournament
+            self.knocked.0.push(loser); // loser gets knocked out of the tournament
         }
     }
 }
@@ -115,7 +115,7 @@ impl Format for DoubleElimination {
             let finals = Duel::new(homie, guest);
             println!("FINAL GAME: {finals}");
             let (winner, second) = finals.play();
-            // NOTE: everyone get's to the knocked players' list,
+            // NOTE: everyone gets to the knocked players' list,
             // as it turns into the leaderboard if reversed
             self.knocked.0.push(second);
             self.knocked.0.push(winner);
@@ -125,7 +125,7 @@ impl Format for DoubleElimination {
         if next_winner_b.0.len() != 1 && next_winner_b.0.len() % 2 == 1 {
             print!("\nspecial winner duel: ");
             let loser = Duel::handle_special(&mut next_winner_b);
-            next_loser_b.0.push(loser); // loser get's pushed to loser branch
+            next_loser_b.0.push(loser); // loser gets pushed to loser branch
         }
 
         // uneven number of players: we need a special pre-match-duel
@@ -133,9 +133,9 @@ impl Format for DoubleElimination {
             println!("\nspecial loser duel: ");
             let loser = Duel::handle_special(&mut next_loser_b);
             println!("bye-bye {loser}");
-            self.knocked.0.push(loser); // loser get's eliminated: knocked out
+            self.knocked.0.push(loser); // loser gets eliminated: knocked out
         }
-        // and we apply the changes by turning new branches into duels
+        // finally we apply the changes
         self.winner_branch = next_winner_b;
         self.loser_branch = next_loser_b;
     }
