@@ -19,7 +19,7 @@ Whether you're organizing a casual game night or a competitive event, it helps y
 >   - [x] Round-robin
 >   - [ ] Swiss-system
 >   - [ ] more?
->   - [ ] seeding where applicable
+>   - [x] seeding where applicable
 > - [ ] library?
 
 ## Getting Started
@@ -27,7 +27,7 @@ Whether you're organizing a casual game night or a competitive event, it helps y
 ### Prerequisites
 
 - **Rust** installed (<https://www.rust-lang.org/tools/install>)
-- A CSV file with participants in `<player/team>,<class>` format (where `<class>` is optional, consists of an integer \[0,255\] and a character, eg: '12Z')
+- A CSV file with participants in `<player/team>,<seed>` format (where `<seed>` is an optional integer \[0,65535\])
 
 ### Installation
 
@@ -57,7 +57,7 @@ To create a tournament, simply run the following command, providing the path to 
 tuna-man <FILE>
 ```
 
-- example input file without class
+- example input file without seed
   ```csv
   name
   Alice
@@ -65,12 +65,12 @@ tuna-man <FILE>
   Jennice
   ...
   ```
-- example input file with class
+- example input file with seed
   ```csv
-  name,class
-  Alice,11A
-  Bob,9B
-  Jennice,0C
+  name,seed
+  Alice,11
+  Bob,9
+  Jennice,0
   ...
   ```
 

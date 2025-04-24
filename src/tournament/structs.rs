@@ -8,14 +8,14 @@ use std::io::Write;
 pub struct Player {
     /// name of the Player
     pub name: String,
-    /// class of player
-    pub class: Option<Class>,
+    /// seeding value of the Player
+    pub seed: Option<u16>,
 }
 impl Player {
-    pub fn new(name: impl AsRef<str>, class: Class) -> Self {
+    pub fn new(name: impl AsRef<str>, seed: u16) -> Self {
         Self {
-            name: name.as_ref().into(),
-            class: Some(class),
+            name: name.as_ref().to_owned(),
+            seed: Some(seed),
         }
     }
     /// not yet initialized
@@ -30,56 +30,12 @@ impl std::fmt::Display for Player {
             write!(f, "{{waiting for player...}}")?;
             return Ok(());
         }
-        write!(
-            f,
-            "{}{}",
-            self.name,
-            if let Some(class) = self.class {
-                [", ", &class.to_string()].concat()
-            } else {
-                String::new()
-            }
-        )
-    }
-}
-
-#[derive(
-    Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, Default, Hash,
-)]
-#[serde(try_from = "&str")]
-#[serde(into = "String")]
-/// a class that a player attends in a school, institution
-/// format: <grade: number, 0-255><id: any character: Unicode scalar value>, eg: "12Z"
-pub struct Class {
-    /// the number of years already spent in the institution, whatever. eg: 10
-    pub grade: u8,
-    /// the id of the class, eg: 'C'
-    pub id: char,
-}
-impl Class {
-    pub fn new(grade: u8, id: char) -> Self {
-        Self { grade, id }
-    }
-}
-impl TryFrom<&str> for Class {
-    type Error = &'static str;
-
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        let mut x = value.chars();
-        let id = x.next_back().ok_or("invalid class id")?;
-        let numbers = x.collect::<String>();
-        let grade = numbers.parse::<u8>().map_err(|_| "invalid grade number")?;
-        Ok(Self { grade, id })
-    }
-}
-impl From<Class> for String {
-    fn from(value: Class) -> Self {
-        format!("{}{}", value.grade, value.id)
-    }
-}
-impl std::fmt::Display for Class {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", String::from(*self))
+        let seed = if let Some(seed) = self.seed {
+            [", ", &seed.to_string()].concat()
+        } else {
+            String::new()
+        };
+        write!(f, "{}{seed}", self.name,)
     }
 }
 
@@ -212,23 +168,5 @@ impl Duel {
         let (winner, loser) = duel.play(); // play it
         branch.0.push(winner); // winner stays
         loser
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn class_from() {
-        let exp = Class::new(0, 'A');
-        assert_eq!(Ok(exp), Class::try_from("0A"));
-        assert_eq!(Ok(exp), Class::try_from("0000000000000000000000A"));
-        let exp = Class::new(255, 'Z');
-        assert_eq!(Ok(exp), Class::try_from("255Z"));
-        assert_eq!(Err("invalid grade number"), Class::try_from("2Z55Z"));
-        assert_eq!(Err("invalid class id"), Class::try_from(""));
-        let exp = Class::new(100, '0');
-        assert_eq!(Ok(exp), Class::try_from("1000"));
     }
 }

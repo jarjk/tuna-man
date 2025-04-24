@@ -17,8 +17,8 @@ impl Format for SingleElimination {
     fn add_players(&mut self, players: Players) {
         self.branch = players;
     }
-    fn initial_shuffle(&mut self) {
-        self.branch.shuffle_as_pairs();
+    fn seed_or_shuffle(&mut self) {
+        self.branch.seed();
     }
 
     fn is_end(&self) -> bool {

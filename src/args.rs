@@ -4,24 +4,24 @@ use std::path::PathBuf;
 #[derive(clap::Parser, Clone, Debug, PartialEq, Eq)]
 #[command(version, about, long_about)]
 pub struct Args {
-    /// Path to file with participants: '<player/team>,<class>' syntax, where <class> is optional
+    /// Path to file with participants: '<player/team>,<seed>' syntax, where <seed> is an optional u16
     pub file: PathBuf,
     /// Format in which the Tournament shall be carried out
     #[arg(short, long, value_enum, default_value_t = format::Supported::DoubleElimination)]
     pub format: format::Supported,
-    /// When to smart-shuffle players
-    /// NOTE: ignored if <format> is not elimination type
-    #[arg(short, long, value_enum, default_value_t = Shuffle::Initially)]
-    pub shuffle: Shuffle,
+    /// When to seed players, or if seed isn't provided: shuffle.
+    /// NOTE: ignored if <FORMAT> is not elimination type
+    #[arg(short, long, value_enum, default_value_t = WhenSeed::Initially)]
+    pub seed: WhenSeed,
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, clap::ValueEnum)]
-pub enum Shuffle {
+pub enum WhenSeed {
     Always,
     Initially,
     Never,
 }
-impl Shuffle {
+impl WhenSeed {
     pub fn always(self) -> bool {
         self == Self::Always
     }
