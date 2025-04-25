@@ -48,10 +48,7 @@ mod double_elimination {
                     nu_p("Profound Ponytail", 0),
                     nu_p("Central Mite", 2),
                 ],
-                &[
-                    nu_p("Exotic Skunk", 0),
-                    nu_p("Relative Wrasse", 2),
-                ],
+                &[nu_p("Exotic Skunk", 0), nu_p("Relative Wrasse", 2)],
                 &[
                     nu_p("Droll Jaguar", 4),
                     nu_p("Expectant Wolfhound", 1),
@@ -59,10 +56,7 @@ mod double_elimination {
                 ],
             ),
             gen_bs(
-                &[
-                    nu_p("Casual Ptarmigan", 3),
-                    nu_p("Profound Ponytail", 0),
-                ],
+                &[nu_p("Casual Ptarmigan", 3), nu_p("Profound Ponytail", 0)],
                 &[nu_p("Exotic Skunk", 0)],
                 &[
                     nu_p("Droll Jaguar", 4),
@@ -292,10 +286,7 @@ mod single_elimination {
                 ],
             ),
             gen_bs(
-                &[
-                    nu_p("Casual Ptarmigan", 3),
-                    nu_p("Profound Ponytail", 0),
-                ],
+                &[nu_p("Casual Ptarmigan", 3), nu_p("Profound Ponytail", 0)],
                 &[
                     nu_p("Relative Wrasse", 2),
                     nu_p("Droll Jaguar", 4),
