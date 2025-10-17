@@ -2,7 +2,7 @@ name: Rust
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["master"]
     tags: ["v*.*.*"]
   pull_request:
   workflow_dispatch:
